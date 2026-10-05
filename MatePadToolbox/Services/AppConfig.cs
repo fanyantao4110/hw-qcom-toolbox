@@ -128,13 +128,14 @@ namespace MatePadToolbox.Services
         public const string DowngradeSubmitUrl = "https://ffusersubmission.byethost17.com/";
 
         /// <summary>
-        /// 配置 json 仓库的 raw 基地址（源码 master 分支）。
+        /// 配置 json 仓库的 raw 基地址（源码 master 分支下的 json/ 子目录）。
         /// 所有在线配置（system_config.json / optimize_modules.json / faq 的 {功能}.json）
         /// 均从该目录下载，统一在此维护，避免各服务地址漂移。
-        /// 注意：原先挂在 release 附件下，release 已删除，改为直接读源码。
+        /// 注意：原先挂在 release 附件下，release 已删除，改为直接读源码；
+        /// 配置 json 统一放在仓库的 json/ 子目录，不再平铺在根目录。
         /// </summary>
         public const string ConfigRepoRawBaseUrl =
-            "https://gitee.com/fanyantao4110/matepad11-system-config/raw/master/";
+            "https://gitee.com/fanyantao4110/matepad11-system-config/raw/master/json/";
 
         /// <summary>创建所有必备目录（对应 bat 开头的 md 语句）。</summary>
         public static void EnsureDirectories()

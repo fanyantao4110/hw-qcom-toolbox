@@ -133,11 +133,13 @@ system/                             # 官方系统包 UPDATE.APP、以及供 sup
 
 所有配置文件均为 **UTF-8 编码**、**不支持注释与尾逗号**；键名不区分大小写，多数字段支持别名。修改后若界面未变化，点击对应页面的「在线更新 / 刷新」按钮或重启程序。
 
-**在线配置统一基地址**（`AppConfig.ConfigRepoRawBaseUrl`，Gitee 源码 master 分支的 raw）：
+**在线配置统一基地址**（`AppConfig.ConfigRepoRawBaseUrl`，Gitee 源码 master 分支 **`json/` 子目录**的 raw）：
 
 ```
-https://gitee.com/fanyantao4110/matepad11-system-config/raw/master/
+https://gitee.com/fanyantao4110/matepad11-system-config/raw/master/json/
 ```
+
+> 配置仓库中所有 json（`system_config.json`、`optimize_modules.json`、`processors.json` 及 faq 的 `{功能}.json`）统一平铺在 **`json/` 子目录**下，程序按「基地址 + 文件名」拼接下载。
 
 | 文件 | 位置 | 作用 | 更新方式 |
 | --- | --- | --- | --- |
