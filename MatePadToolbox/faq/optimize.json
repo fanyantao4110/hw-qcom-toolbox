@@ -1,0 +1,18 @@
+[
+  {
+    "question": "一键刷入提示找不到模块文件？",
+    "answer": "先在模块操作面板中点击【下载】，确认 modules 目录下已存在 json 中 file 字段对应的 zip 文件。文件名必须与 json 里的英文 file 字段一致。"
+  },
+  {
+    "question": "一键刷入失败（推送或安装报错）？",
+    "answer": "请依次确认：①已开启 USB 调试并连接电脑；②ADB 驱动已正确安装；③设备已授权本电脑；④Magisk 或 APatch 已安装并授予 Root 权限；⑤已关闭 Shamiko 等反检测模块。"
+  },
+  {
+    "question": "如何新增/更新模块？",
+    "answer": "编辑 modules 目录下的 optimize_modules.json，按 {\"name\":\"模块名\",\"file\":\"英文文件名.zip\",\"url\":\"下载地址\",\"description\":\"说明\"} 结构添加条目，也可点击页面【在线更新模块列表】从 Gitee 拉取最新列表。"
+  },
+  {
+    "question": "模块安装成功后需要重启吗？",
+    "answer": "需要。大部分优化模块安装后需重启设备才能生效。"
+  }
+]

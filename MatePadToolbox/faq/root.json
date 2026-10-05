@@ -1,0 +1,22 @@
+[
+  {
+    "question": "APatch 一键 Root 提示「提取 boot 失败」？",
+    "answer": "请确认平板已正确进入 9008 模式，检查设备管理器中的 Qualcomm 9008 端口是否正常。若使用鸿蒙4，请确保通过工程线/短接方式进入 9008。"
+  },
+  {
+    "question": "Magisk 管理器安装后打不开？",
+    "answer": "请确认 Magisk.apk 版本与设备架构兼容。可尝试在平板上手动卸载旧版 Magisk 后重新安装，或从官方渠道下载v28.1版本的 Magisk.apk 放入 tools\\apks 目录。"
+  },
+  {
+    "question": "APatch 修补 boot 时提示「kptools 运行失败」？",
+    "answer": "请检查 tools\\apatch_tools 目录下是否存在 kptools.exe 和 kpimg-android 文件，且文件完整未损坏。可重新下载 APatch 工具包。"
+  },
+  {
+    "question": "Root 后设备还能接收系统更新吗？",
+    "answer": "Root 后无法接收系统更新。"
+  },
+  {
+    "question": "安装管理器提示 adb.exe: no devices/emulators found ？",
+    "answer": "请确保设备已开启 USB 调试并且连接电脑。"
+  }
+]

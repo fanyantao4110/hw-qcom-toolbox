@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MatePadToolbox.Pages.AdvancedFlashPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MatePadToolbox.Controls"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="16">
+        <Grid>
+            <TextBlock Text="高级刷机" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+            <controls:TroubleshootButton FeatureKey="advanced_flash" FeatureName="高级刷机"
+                                         HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Pivot x:Name="FlashPivot">
+            <!-- ==================== Fastboot 模式 ==================== -->
+            <PivotItem Header="Fastboot模式">
+                <StackPanel Spacing="12" Padding="0,8,0,0">
+                    <TextBlock TextWrapping="Wrap" Opacity="0.8" LineHeight="22"
+                               Text="用于向设备任意分区刷入指定镜像。请输入分区名并选择镜像文件，程序将进入 Fastboot 模式后刷写该镜像到指定分区。"/>
+
+                    <TextBlock Text="分区名" FontWeight="SemiBold"/>
+                    <TextBox x:Name="PartitionNameBox" PlaceholderText="输入要刷入的分区名（不含 .img，如 boot、system、vendor、recovery）" MinWidth="400"/>
+
+                    <TextBlock Text="镜像文件" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox x:Name="MirrorPathBox" PlaceholderText="选择要刷入的镜像文件（.img）" MinWidth="400" IsReadOnly="True"/>
+                        <Button Content="选择镜像" Click="BrowseImage_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,16,0,0">
+                        <Button x:Name="BtnFlash" Content="开始刷入" Click="Flash_Click"
+                                Style="{StaticResource AccentButtonStyle}"/>
+                        <Button x:Name="BtnCancel" Content="取消" Click="Cancel_Click" IsEnabled="False"/>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+
+            <!-- ==================== 9008 模式 ==================== -->
+            <PivotItem Header="9008模式">
+                <StackPanel Spacing="12" Padding="0,8,0,0">
+                    <TextBlock TextWrapping="Wrap" Opacity="0.8" LineHeight="22"
+                               Text="通过 9008 深度刷机模式向设备指定分区刷入镜像。先点击【获取分区表】自动进入 9008 并上传引导编程器、从设备读出分区表；再从列表选择目标分区、选择镜像并开始刷入。无需预置 rawprogram edl 包。"/>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnGetPartitionTable" Content="获取分区表" Click="GetPartitionTable_Click"
+                                Style="{StaticResource AccentButtonStyle}"/>
+                        <Button x:Name="Btn9008Cancel" Content="取消" Click="Cancel9008_Click" IsEnabled="False"/>
+                    </StackPanel>
+                    <TextBlock x:Name="PortStatusText" Opacity="0.8"/>
+                    <TextBlock x:Name="PartitionCountText" Opacity="0.7" Text="尚未读取设备分区表。"/>
+
+                    <TextBlock Text="设备分区表（点击一行选择目标分区）" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <ListView x:Name="PartitionList" Height="180" SelectionMode="Single"
+                              SelectionChanged="PartitionList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Display}" TextWrapping="Wrap" FontFamily="Consolas"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock x:Name="SelectedPartitionText" Opacity="0.8" TextWrapping="Wrap"/>
+
+                    <TextBlock Text="镜像文件" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox x:Name="MirrorPathBox9008" PlaceholderText="选择要刷入的镜像文件（.img）" MinWidth="400" IsReadOnly="True"/>
+                        <Button Content="选择镜像" Click="BrowseImage9008_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,16,0,0">
+                        <Button x:Name="Btn9008Flash" Content="开始刷入" Click="Flash9008_Click"
+                                Style="{StaticResource AccentButtonStyle}"/>
+                        <Button x:Name="Btn9008Reboot" Content="重启设备" Click="Reboot9008_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+
+        <controls:LogPanel x:Name="Log" Height="300"/>
+    </StackPanel>
+</Page>

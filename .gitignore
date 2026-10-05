@@ -1,0 +1,36 @@
+# 构建产物
+bin/
+obj/
+publish/
+*.user
+*.suo
+.vs/
+*.binlog
+
+# 运行时生成的目录与文件
+backup/
+cache/
+tmp/
+out/
+log/
+screenshots/
+
+# 第三方工具与镜像（版权原因不入库）
+tools/
+unlock/
+vbmeta/
+base/
+ramdisk/
+system/
+*.img
+*.elf
+*.apk
+*.7z
+
+# 单文件发布产物
+publish_new/
+
+# AI 工作目录与本地项目数据（不入库）
+.workbuddy/
+context/
+todo/

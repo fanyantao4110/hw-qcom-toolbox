@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="MatePadToolbox.Dialogs.UnrootDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="取消 Root 权限"
+    PrimaryButtonText="开始"
+    CloseButtonText="取消"
+    DefaultButton="Primary">
+
+    <StackPanel Spacing="12" Width="460">
+        <TextBlock TextWrapping="Wrap" Opacity="0.8" LineHeight="22"
+                   Text="将从所选底包中提取原厂 boot 与 ramdisk 分区，并在 Fastboot 模式下刷回，从而移除 Root。"/>
+
+        <TextBlock Text="1. 选择底包（UPDATE.APP）" FontWeight="SemiBold"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <ComboBox x:Name="AppCombo" PlaceholderText="选择底包" MinWidth="360"/>
+            <Button Content="刷新" Click="Refresh_Click"/>
+        </StackPanel>
+
+        <TextBlock Text="2. 选择设备当前模式" FontWeight="SemiBold" Margin="0,4,0,0"/>
+        <RadioButtons x:Name="ModeGroup" SelectedIndex="0">
+            <RadioButton Content="系统模式（自动通过 ADB 重启进入 Fastboot）"/>
+            <RadioButton Content="Fastboot 模式（已手动进入 Fastboot）"/>
+        </RadioButtons>
+
+        <InfoBar x:Name="StatusBar" IsOpen="False" IsClosable="False"/>
+    </StackPanel>
+</ContentDialog>

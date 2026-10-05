@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MatePadToolbox.Pages.RootPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MatePadToolbox.Controls"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="16">
+        <Grid>
+            <TextBlock Text="Root" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+            <controls:TroubleshootButton FeatureKey="root" FeatureName="Root"
+                                         HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Pivot x:Name="RootPivot">
+            <!-- ==================== Magisk 方式 ==================== -->
+            <PivotItem Header="Magisk 方式">
+                <StackPanel Spacing="12" Padding="0,8,0,0">
+                    <InfoBar IsOpen="True" IsClosable="False" Severity="Warning"
+                             Title="不建议使用 Magisk 方式"
+                             Message="本方式直接修补 ramdisk，成功率较低、风险较高。建议改用【APatch 方式】；如仍要用 Magisk，建议自行提取并修补 ramdisk。" />
+                    <TextBlock TextWrapping="Wrap" Opacity="0.8" LineHeight="22"
+                               Text="此功能将自动执行：1. 通过 9008 提取 ramdisk 分区 → 2. 使用 Magisk(magiskboot) 修补 ramdisk → 3. 通过 9008 刷入修补后的 ramdisk。"/>
+
+                    <TextBlock Text="当前系统版本" FontWeight="SemiBold"/>
+                    <RadioButtons x:Name="MagiskOsGroup" SelectedIndex="0">
+                        <RadioButton Content="鸿蒙2 / 鸿蒙3（自动通过 ADB 进入 9008）"/>
+                        <RadioButton Content="鸿蒙4（需工程线/短接进入 9008）"/>
+                    </RadioButtons>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnMagiskOneClick" Content="一键 Root（提取+修补+刷入）" Click="MagiskOneClick_Click"
+                                Style="{StaticResource AccentButtonStyle}"/>
+                    </StackPanel>
+
+                    <TextBlock Text="或分步执行" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnMagiskExtract" Content="1. 提取 ramdisk" Click="MagiskExtract_Click" MinWidth="120"/>
+                        <Button x:Name="BtnMagiskPatch" Content="2. 修补 ramdisk" Click="MagiskPatch_Click" MinWidth="120"/>
+                        <Button x:Name="BtnMagiskFlash" Content="3. 刷入 ramdisk" Click="MagiskFlash_Click" MinWidth="120"/>
+                        <Button x:Name="BtnMagiskCancel" Content="取消" Click="MagiskCancel_Click" IsEnabled="False"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnInstallMagisk" Content="安装 Magisk 管理器" Click="InstallMagisk_Click" MinWidth="180"/>
+                        <Button x:Name="BtnMagiskUnroot" Content="取消 Root 权限" Click="MagiskUnroot_Click" MinWidth="160"/>
+                    </StackPanel>
+
+                    <TextBlock Text="一键隐藏 Root 环境（仅 Magisk）" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12" LineHeight="20"
+                               Text="需设备已 Root，并建议先在开发者选项中关闭「监控 ADB 安装应用」。流程：安装隐藏应用列表并导入配置 → 安装配套 APK（密钥认证 / Luna）→ 通过 magisk --install-module 刷入隐藏模块（TEESimulator-RS、紫罗兰辅助、LSPosed v2.2.0-7854、Shamiko）→ 自动启用内置 Zygisk 并建立 Shamiko 白名单文件（/data/adb/shamiko/whitelist）。特意不安装 Zygisk Next（Magisk 自带 Zygisk）。所用资源全部取自本地 modules 目录。完成后需重启设备生效。"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnMagiskHideEnv" Content="一键隐藏 Root" Click="MagiskHideEnv_Click"
+                                Style="{StaticResource AccentButtonStyle}" MinWidth="180"/>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+
+            <!-- ==================== APatch 方式 ==================== -->
+            <PivotItem Header="APatch 方式">
+                <StackPanel Spacing="12" Padding="0,8,0,0">
+                    <TextBlock TextWrapping="Wrap" Opacity="0.8" LineHeight="22"
+                               Text="此功能将自动执行：1. 通过 9008 提取 boot 分区 → 2. 使用 APatch(kptools) 修补 boot → 3. 刷入修补后的 boot。"/>
+
+                    <TextBlock Text="当前系统版本" FontWeight="SemiBold"/>
+                    <RadioButtons x:Name="ApachOsGroup" SelectedIndex="0">
+                        <RadioButton Content="鸿蒙2 / 鸿蒙3（自动通过 ADB 进入 9008）"/>
+                        <RadioButton Content="鸿蒙4（需工程线/短接进入 9008）"/>
+                    </RadioButtons>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnApatchOneClick" Content="一键 Root（提取+修补+刷入）" Click="ApatchOneClick_Click"
+                                Style="{StaticResource AccentButtonStyle}"/>
+                    </StackPanel>
+
+                    <TextBlock Text="或分步执行" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnApatchExtract" Content="1. 提取 boot" Click="ApatchExtract_Click" MinWidth="120"/>
+                        <Button x:Name="BtnApatchPatch" Content="2. 修补 boot" Click="ApatchPatch_Click" MinWidth="120"/>
+                        <Button x:Name="BtnApatchFlash" Content="3. 刷入 boot" Click="ApatchFlash_Click" MinWidth="120"/>
+                        <Button x:Name="BtnApatchCancel" Content="取消" Click="ApatchCancel_Click" IsEnabled="False"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnInstallApatch" Content="安装 APatch 管理器" Click="InstallApatch_Click" MinWidth="180"/>
+                        <Button x:Name="BtnApatchUnroot" Content="取消 Root 权限" Click="ApatchUnroot_Click" MinWidth="160"/>
+                    </StackPanel>
+
+                    <TextBlock Text="一键隐藏 Root 环境（仅 APatch）" FontWeight="SemiBold" Margin="0,8,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12" LineHeight="20"
+                               Text="需设备已 Root，并建议先在开发者选项中关闭「监控 ADB 安装应用」。流程：安装隐藏应用列表并导入配置 → 安装配套 APK（密钥认证 / Luna）→ 通过 apd 刷入隐藏模块（TEESimulator-RS、Zygisk Next、紫罗兰辅助、LSPosed v2.2.0-7854）。所用资源全部取自本地 modules 目录。完成后需重启设备生效。"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="BtnApatchHideEnv" Content="一键隐藏 Root" Click="ApatchHideEnv_Click"
+                                Style="{StaticResource AccentButtonStyle}" MinWidth="180"/>
+                    </StackPanel>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+
+        <controls:LogPanel x:Name="Log" Height="300"/>
+    </StackPanel>
+</Page>

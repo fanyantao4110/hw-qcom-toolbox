@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MatePadToolbox.Pages.PartToolPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MatePadToolbox.Controls"
+    mc:Ignorable="d">
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Spacing="16">
+                <Grid>
+                    <TextBlock Text="分区解包 / 打包" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Button x:Name="BtnSettings" Content="设置" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            ToolTipService.ToolTip="调整打包/解包设置（super、erofs、ext4）" Click="BtnSettings_Click"/>
+                </Grid>
+
+                <!-- 目录约定说明 -->
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="12">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="目录约定（img 目录下，自动生成，无需手动指定）" FontWeight="SemiBold"/>
+                        <TextBlock TextWrapping="Wrap" Opacity="0.85" LineHeight="20"
+                                   Text="img\img_1：解包 super 得到的分区镜像&#10;img\img_2：打包分区镜像的输出，也是打包 super 的输入&#10;img\img_3：打包 super 生成的 super.img&#10;img\config：解包时自动导出的 fs_config / file_contexts（打包前置）&#10;img\system / img\vendor：解分区镜像时输出的文件树（与 DNA 一致）"/>
+                    </StackPanel>
+                </Border>
+
+                <Pivot x:Name="PartPivot">
+
+                    <!-- ==================== Super ==================== -->
+                    <PivotItem Header="Super 动态分区">
+                        <StackPanel Spacing="14" Padding="0,8,0,0">
+
+                            <TextBlock Text="解包 Super（super.img → img\img_1 各分区镜像）" FontWeight="SemiBold"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="super.img（自动识别，不依赖文件名）：" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="SuperImgCombo" MinWidth="360" PlaceholderText="选择 super 镜像（自动识别）"
+                                          SelectionChanged="SuperImgCombo_SelectionChanged"/>
+                                <Button Content="刷新列表" Click="RefreshSuperList_Click"/>
+                                <Button Content="浏览…" Click="BrowseSuperImg_Click"/>
+                            </StackPanel>
+                            <TextBlock x:Name="SuperDetectText" Text="选择后自动检测镜像类型。" Opacity="0.85"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button x:Name="BtnExtractSuper" Content="解包 Super" Click="ExtractSuper_Click"
+                                        Style="{StaticResource AccentButtonStyle}" MinWidth="120"/>
+                                <Button x:Name="BtnCancelSuper" Content="取消" Click="Cancel_Click" IsEnabled="False"/>
+                            </StackPanel>
+
+                            <TextBlock Text="打包 Super（img\img_2 分区镜像 → img\img_3\super.img）" FontWeight="SemiBold" Margin="0,14,0,0"/>
+                            <TextBlock TextWrapping="Wrap" Opacity="0.8" LineHeight="20"
+                                       Text="程序自动读取 img\img_2 下的分区镜像（system.img / vendor.img 等，可手动放入），合成 sparse 的 super.img 输出到 img\img_3。分区属性为 readonly。打包参数（super 名、组名、metadata 大小/槽数、sparse、额外余量、自定义大小、erofs 压缩等）请点击右上角“设置”调整。" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button x:Name="BtnPackSuper" Content="打包 Super" Click="PackSuper_Click"
+                                        Style="{StaticResource AccentButtonStyle}" MinWidth="120"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </PivotItem>
+
+                    <!-- ==================== 分区镜像 ==================== -->
+                    <PivotItem Header="分区镜像 (erofs/ext4)">
+                        <StackPanel Spacing="14" Padding="0,8,0,0">
+
+                            <TextBlock Text="解包分区镜像（自动识别 erofs / ext4，自动导出 config）" FontWeight="SemiBold"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="分区镜像列表（已过滤 super）：" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="PartImgCombo" MinWidth="380" PlaceholderText="从 img\img_1 选择分区镜像"
+                                          DisplayMemberPath="Name" SelectionChanged="PartImgCombo_SelectionChanged"/>
+                                <Button Content="刷新列表" Click="RefreshPartList_Click"/>
+                            </StackPanel>
+                            <TextBlock x:Name="PartDetectText" Text="请在列表中选择要解包的分区镜像。" Opacity="0.85"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button x:Name="BtnExtractPart" Content="解包该分区" Click="ExtractPart_Click"
+                                        Style="{StaticResource AccentButtonStyle}" MinWidth="120"/>
+                                <Button x:Name="BtnCancelPart" Content="取消" Click="Cancel_Click" IsEnabled="False"/>
+                            </StackPanel>
+
+                            <TextBlock Text="打包分区镜像（文件树 → img\img_2）" FontWeight="SemiBold" Margin="0,14,0,0"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="源文件树目录列表：" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="PartSrcCombo" MinWidth="380" PlaceholderText="从 img 根下选择已解出的文件树目录（如 system / vendor）"
+                                          DisplayMemberPath="Name" SelectionChanged="PartSrcCombo_SelectionChanged"/>
+                                <Button Content="刷新列表" Click="RefreshPartSrcList_Click"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="文件系统" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="PartFsCombo" SelectedIndex="0" MinWidth="100">
+                                    <ComboBoxItem Content="erofs"/>
+                                    <ComboBoxItem Content="ext4"/>
+                                </ComboBox>
+                                <TextBlock Text="分区名(自动取目录名，可改)" VerticalAlignment="Center"/>
+                                <TextBox x:Name="PartNameBox" Text="system" MinWidth="110" ToolTipService.ToolTip="作为挂载点/卷标"/>
+                                <TextBlock Text="压缩算法" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="PartAlgoCombo" SelectedIndex="1" MinWidth="100">
+                                    <ComboBoxItem Content="lz4"/>
+                                    <ComboBoxItem Content="lz4hc"/>
+                                    <ComboBoxItem Content="lzma"/>
+                                </ComboBox>
+                                <TextBlock Text="等级" VerticalAlignment="Center"/>
+                                <TextBox x:Name="PartLevelBox" Text="8" MinWidth="50" ToolTipService.ToolTip="0-9，仅 erofs"/>
+                            </StackPanel>
+                            <TextBlock Text="fs_config / file_contexts（自动定位到 img\config）："/>
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="PartFsCfgBox" IsReadOnly="True" HorizontalAlignment="Stretch"
+                                         PlaceholderText="img\config\分区_fs_config"/>
+                                <TextBox Grid.Column="1" x:Name="PartFctxBox" IsReadOnly="True" HorizontalAlignment="Stretch"
+                                         PlaceholderText="img\config\分区_file_contexts"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button x:Name="BtnPackPart" Content="打包该分区" Click="PackPart_Click"
+                                        Style="{StaticResource AccentButtonStyle}" MinWidth="120"/>
+                                <Button Content="清空日志" Click="ClearLog_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </PivotItem>
+                </Pivot>
+
+                <controls:LogPanel x:Name="Log" Height="250"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- 右上角成功提示 -->
+        <Border x:Name="TopRightTip" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,10,16,0" Padding="14,8" CornerRadius="8" Opacity="0" IsHitTestVisible="False"
+                Background="{ThemeResource SystemFillColorSuccessBackgroundBrush}"
+                BorderBrush="{ThemeResource SystemFillColorSuccessBrush}" BorderThickness="1">
+            <StackPanel>
+                <TextBlock x:Name="TopRightTipText" FontWeight="SemiBold"/>
+                <TextBlock x:Name="TopRightTipDetail" Opacity="0.9" TextWrapping="Wrap" MaxWidth="420"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

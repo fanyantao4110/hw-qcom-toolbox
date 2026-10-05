@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MatePadToolbox.Pages.AdvancedToolboxPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MatePadToolbox.Controls"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="16">
+        <Grid>
+            <TextBlock Text="高级工具箱" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+            <controls:TroubleshootButton FeatureKey="advanced" FeatureName="高级工具箱"
+                                         HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+        <InfoBar IsOpen="True" IsClosable="False" Severity="Informational"
+                 Title="提示"
+                 Message="这里提供进阶工具。当前支持：连接9008并发送引导（仅下发 firehose 引导编程器，不写入任何 ABL/解锁镜像）。处理器型号保存在 unlock\processors.json，可自行扩展。"/>
+
+        <TextBlock Text="当前处理器（在侧边栏顶部【CPU型号】下拉框中选择）" FontWeight="SemiBold"/>
+        <TextBlock x:Name="ProcHintText" FontSize="12" Opacity="0.75" TextWrapping="Wrap"/>
+
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button x:Name="BtnSendBoot" Content="连接9008并发送引导" Click="SendBoot_Click"
+                    Style="{StaticResource AccentButtonStyle}" MinWidth="220"/>
+            <Button x:Name="BtnCancel" Content="取消" Click="Cancel_Click" IsEnabled="False"/>
+        </StackPanel>
+
+        <TextBlock Text="快捷操作（不进入 9008，直接对已连接设备执行）" FontWeight="SemiBold"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="ADB 重启到 Fastboot" Click="RebootFastboot_Click"/>
+            <Button Content="ADB 重启到 9008" Click="RebootEdl_Click"/>
+            <Button Content="Fastboot 重启设备" Click="RebootDevice_Click"/>
+            <Button Content="打开 unlock 目录" Click="OpenUnlockDir_Click"/>
+        </StackPanel>
+
+        <TextBlock Text="危险操作" FontWeight="SemiBold" Margin="0,8,0,0"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button x:Name="BtnFactoryReset" Content="恢复出厂设置" Click="FactoryReset_Click"
+                    ToolTipService.ToolTip="写入 misc 分区后重启，设备将进入 Recovery 自动清除全部数据"/>
+        </StackPanel>
+
+        <controls:LogPanel x:Name="Log" Height="260"/>
+    </StackPanel>
+</Page>

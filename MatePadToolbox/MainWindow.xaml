@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="MatePadToolbox.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MatePadToolbox.Controls"
+    mc:Ignorable="d"
+    Title="华为高通芯片通用工具箱">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部设备状态栏：实时显示连接模式与设备信息 -->
+        <controls:DeviceStatusBar Grid.Row="0"/>
+
+        <NavigationView Grid.Row="1" x:Name="NavView"
+                        Loaded="NavView_Loaded"
+                        ItemInvoked="NavView_ItemInvoked"
+                        IsSettingsVisible="False"
+                        PaneDisplayMode="Left"
+                        OpenPaneLength="220"
+                        Header="">
+            <NavigationView.PaneCustomContent>
+                <StackPanel Spacing="6" Padding="12,0,12,10">
+                    <TextBlock Text="CPU 型号" FontSize="12" Opacity="0.7" Margin="4,4,0,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <ComboBox x:Name="GlobalProcCombo" MinWidth="150" DisplayMemberPath="Name"
+                                  SelectionChanged="GlobalProcCombo_SelectionChanged"
+                                  PlaceholderText="选择型号"/>
+                        <Button Click="RefreshGlobalProc_Click"
+                                ToolTipService.ToolTip="刷新处理器列表"
+                                Padding="10,6" VerticalAlignment="Center">
+                            <FontIcon Glyph="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock x:Name="GlobalProcStatus" FontSize="10" Opacity="0.6" Margin="4,0,0,0"
+                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </NavigationView.PaneCustomContent>
+            <NavigationView.MenuItems>
+                <NavigationViewItem Tag="home" Content="主页" Icon="Home"/>
+                <NavigationViewItem Tag="driver" Content="安装驱动程序">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE7F1;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="backup9008" Content="9008备份/恢复">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE7C9;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="unlock" Content="解锁BL">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE785;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="root" Content="Root">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE7EF;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="optimize" Content="优化模块">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8FD;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="download" Content="下载第三方系统/底包" Icon="Download"/>
+                <NavigationViewItem Tag="flash" Content="刷入第三方系统">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE777;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="advflash" Content="高级刷机">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8F1;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="official" Content="刷官方系统(救砖)">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE77C;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="downgrade" Content="降级系统/回锁BL">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE74B;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="advanced" Content="高级工具箱">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE713;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="parttool" Content="分区解包/打包">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE8B7;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="adbtools" Content="ADB工具集">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE756;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="devmgr" Content="设备管理器">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE770;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="about" Content="关于">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE946;"/></NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <ScrollViewer>
+                <Frame x:Name="ContentFrame" Padding="24,12,24,24"/>
+            </ScrollViewer>
+        </NavigationView>
+    </Grid>
+</Window>

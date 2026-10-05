@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MatePadToolbox.Controls.DeviceStatusBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="0,0,0,1" Padding="16,8">
+        <Grid ColumnSpacing="12" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左：连接状态 -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Ellipse x:Name="StatusDot" Width="10" Height="10"
+                         Fill="{ThemeResource SystemFillColorCriticalBrush}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="ModeText" Text="检测中..." FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- 中：设备信息（机型 / 系统 / BL / 电量 / 存储） -->
+            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled" VerticalAlignment="Center">
+                <StackPanel x:Name="InfoPanel" Orientation="Horizontal" Spacing="18" VerticalAlignment="Center"/>
+            </ScrollViewer>
+
+            <!-- 右：刷新 -->
+            <Button Grid.Column="2" x:Name="BtnRefresh" Click="Refresh_Click" Padding="8,4"
+                    VerticalAlignment="Center" ToolTipService.ToolTip="立即刷新设备状态">
+                <FontIcon Glyph="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>

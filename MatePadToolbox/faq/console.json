@@ -1,0 +1,14 @@
+[
+  {
+    "question": "终端里输入 adb 命令提示「不是内部或外部命令」？",
+    "answer": "本工具箱内置的 ADB 命令行工具工作目录为 tools，若出现此提示请检查 tools 目录下是否存在 adb.exe，或重新点击「启动终端」。"
+  },
+  {
+    "question": "输入命令后没有反应或终端卡住？",
+    "answer": "部分命令（如 adb shell、logcat）需要等待设备响应。若长时间无反应，可点击「关闭终端」后重新「启动终端」。"
+  },
+  {
+    "question": "如何退出 adb shell？",
+    "answer": "在 adb shell 中输入 exit 并按回车即可退出 shell 回到普通命令行。"
+  }
+]
